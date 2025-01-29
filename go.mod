@@ -1,8 +1,9 @@
-module github.com/stacklok/frizbee
+module github.com/xopham/frizbee
 
 go 1.23.2
 
 require (
+	github.com/Masterminds/semver/v3 v3.3.1
 	github.com/deckarep/golang-set/v2 v2.7.0
 	github.com/go-git/go-billy/v5 v5.6.2
 	github.com/google/go-containerregistry v0.20.3
@@ -12,6 +13,7 @@ require (
 	github.com/puzpuzpuz/xsync v1.5.2
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.10.0
+	golang.org/x/oauth2 v0.25.0
 	golang.org/x/sync v0.10.0
 	gopkg.in/h2non/gock.v1 v1.1.2
 	gopkg.in/yaml.v3 v3.0.1

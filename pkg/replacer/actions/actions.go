@@ -30,10 +30,10 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/google/go-github/v66/github"
-	"github.com/stacklok/frizbee/pkg/interfaces"
-	"github.com/stacklok/frizbee/pkg/replacer/image"
-	"github.com/stacklok/frizbee/pkg/utils/config"
-	"github.com/stacklok/frizbee/pkg/utils/store"
+	"github.com/xopham/frizbee/pkg/interfaces"
+	"github.com/xopham/frizbee/pkg/replacer/image"
+	"github.com/xopham/frizbee/pkg/utils/config"
+	"github.com/xopham/frizbee/pkg/utils/store"
 	"golang.org/x/oauth2"
 )
 

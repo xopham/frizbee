@@ -19,7 +19,7 @@ package version
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/stacklok/frizbee/internal/cli"
+	"github.com/xopham/frizbee/internal/cli"
 )
 
 // CmdVersion is the Cobra command for the version command.

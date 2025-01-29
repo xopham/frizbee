@@ -29,10 +29,10 @@ import (
 	"github.com/google/go-containerregistry/pkg/v1/remote"
 	dockerparser "github.com/moby/buildkit/frontend/dockerfile/parser"
 
-	"github.com/stacklok/frizbee/internal/cli"
-	"github.com/stacklok/frizbee/pkg/interfaces"
-	"github.com/stacklok/frizbee/pkg/utils/config"
-	"github.com/stacklok/frizbee/pkg/utils/store"
+	"github.com/xopham/frizbee/internal/cli"
+	"github.com/xopham/frizbee/pkg/interfaces"
+	"github.com/xopham/frizbee/pkg/utils/config"
+	"github.com/xopham/frizbee/pkg/utils/store"
 )
 
 const (

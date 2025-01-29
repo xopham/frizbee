@@ -23,10 +23,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/stacklok/frizbee/cmd/actions"
-	"github.com/stacklok/frizbee/cmd/image"
-	"github.com/stacklok/frizbee/cmd/version"
-	"github.com/stacklok/frizbee/pkg/utils/config"
+	"github.com/xopham/frizbee/cmd/actions"
+	"github.com/xopham/frizbee/cmd/image"
+	"github.com/xopham/frizbee/cmd/version"
+	"github.com/xopham/frizbee/pkg/utils/config"
 )
 
 // Execute runs the root command.

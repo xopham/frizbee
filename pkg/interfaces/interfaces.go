@@ -21,8 +21,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/stacklok/frizbee/pkg/utils/config"
-	"github.com/stacklok/frizbee/pkg/utils/store"
+	"github.com/xopham/frizbee/pkg/utils/config"
+	"github.com/xopham/frizbee/pkg/utils/store"
 )
 
 // ErrReferenceSkipped is returned when the reference is skipped.

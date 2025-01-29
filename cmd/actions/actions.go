@@ -24,10 +24,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/stacklok/frizbee/internal/cli"
-	"github.com/stacklok/frizbee/pkg/interfaces"
-	"github.com/stacklok/frizbee/pkg/replacer"
-	"github.com/stacklok/frizbee/pkg/utils/config"
+	"github.com/xopham/frizbee/internal/cli"
+	"github.com/xopham/frizbee/pkg/interfaces"
+	"github.com/xopham/frizbee/pkg/replacer"
+	"github.com/xopham/frizbee/pkg/utils/config"
 )
 
 // CmdGHActions represents the actions command

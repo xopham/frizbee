@@ -32,12 +32,12 @@ import (
 	"github.com/go-git/go-billy/v5/osfs"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/stacklok/frizbee/internal/traverse"
-	"github.com/stacklok/frizbee/pkg/interfaces"
-	"github.com/stacklok/frizbee/pkg/replacer/actions"
-	"github.com/stacklok/frizbee/pkg/replacer/image"
-	"github.com/stacklok/frizbee/pkg/utils/config"
-	"github.com/stacklok/frizbee/pkg/utils/ghrest"
+	"github.com/xopham/frizbee/internal/traverse"
+	"github.com/xopham/frizbee/pkg/interfaces"
+	"github.com/xopham/frizbee/pkg/replacer/actions"
+	"github.com/xopham/frizbee/pkg/replacer/image"
+	"github.com/xopham/frizbee/pkg/utils/config"
+	"github.com/xopham/frizbee/pkg/utils/ghrest"
 )
 
 // ReplaceResult holds a slice of all processed files along with a map of their modified content

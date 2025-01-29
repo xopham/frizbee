@@ -24,12 +24,12 @@ import (
 	"github.com/go-git/go-billy/v5/memfs"
 	"github.com/stretchr/testify/require"
 
-	"github.com/stacklok/frizbee/internal/cli"
-	"github.com/stacklok/frizbee/pkg/interfaces"
-	"github.com/stacklok/frizbee/pkg/replacer/actions"
-	"github.com/stacklok/frizbee/pkg/replacer/image"
-	"github.com/stacklok/frizbee/pkg/utils/config"
-	"github.com/stacklok/frizbee/pkg/utils/ghrest"
+	"github.com/xopham/frizbee/internal/cli"
+	"github.com/xopham/frizbee/pkg/interfaces"
+	"github.com/xopham/frizbee/pkg/replacer/actions"
+	"github.com/xopham/frizbee/pkg/replacer/image"
+	"github.com/xopham/frizbee/pkg/utils/config"
+	"github.com/xopham/frizbee/pkg/utils/ghrest"
 )
 
 func TestReplacer_ParseContainerImageString(t *testing.T) {
