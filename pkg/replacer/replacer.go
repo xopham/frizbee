@@ -311,7 +311,7 @@ func parseAndReplaceReferencesInFile(
 			if strings.Contains(matchedLine, "FROM") {
 				return fmt.Sprintf("%s%s:%s@%s", ret.Prefix, ret.Name, ret.Tag, ret.Ref)
 			}
-			return fmt.Sprintf("%s%s@%s # %s", ret.Prefix, ret.Name, ret.Ref, ret.Tag)
+			return fmt.Sprintf("%s%s@%s # %s", ret.Prefix, ret.Name, ret.Ref, ret.FullTag)
 		})
 
 		// Check if the line was modified and set the modified flag to true if it was

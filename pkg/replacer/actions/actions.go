@@ -23,15 +23,18 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"slices"
+	"sort"
 	"strings"
 
+	"github.com/Masterminds/semver/v3"
 	"github.com/google/go-github/v66/github"
-
 	"github.com/stacklok/frizbee/pkg/interfaces"
 	"github.com/stacklok/frizbee/pkg/replacer/image"
 	"github.com/stacklok/frizbee/pkg/utils/config"
 	"github.com/stacklok/frizbee/pkg/utils/store"
+	"golang.org/x/oauth2"
 )
 
 const (
@@ -120,7 +123,6 @@ func (p *Parser) replaceAction(
 	restIf interfaces.REST,
 	cfg config.Config,
 ) (*interfaces.EntityRef, error) {
-
 	// If the value is a local path or should be excluded, skip it
 	if isLocal(matchedLine) || shouldExclude(&cfg.GHActions, matchedLine) {
 		return nil, fmt.Errorf("%w: %s", interfaces.ErrReferenceSkipped, matchedLine)
@@ -165,11 +167,17 @@ func (p *Parser) replaceAction(
 		return nil, fmt.Errorf("image already referenced by digest: %s %w", matchedLine, interfaces.ErrReferenceSkipped)
 	}
 
+	fullTag, err := GetFullTag(ctx, cfg.GHActions, restIf, act, ref, sum)
+	if err != nil {
+		fullTag = ref
+	}
+
 	return &interfaces.EntityRef{
-		Name: act,
-		Ref:  sum,
-		Type: ReferenceType,
-		Tag:  ref,
+		Name:    act,
+		Ref:     sum,
+		Type:    ReferenceType,
+		Tag:     ref,
+		FullTag: fullTag,
 	}, nil
 }
 
@@ -291,6 +299,27 @@ func GetChecksum(ctx context.Context, cfg config.GHActions, restIf interfaces.RE
 	return "", ErrInvalidActionReference
 }
 
+// GetFullTag returns the full SemVer tag for a given action and checksum.
+func GetFullTag(ctx context.Context, cfg config.GHActions, restIf interfaces.REST, action, ref, sum string) (string, error) {
+	owner, repo, err := parseActionFragments(action)
+	if err != nil {
+		return "", err
+	}
+	tags, err := getTagsForSHA(ctx, owner, repo, sum)
+	if err != nil {
+		return "", err
+	}
+	if len(tags) == 0 {
+		return "", fmt.Errorf("no tags found for %s", sum)
+	}
+
+	highestTag, err := getHighestSemverTag(tags)
+	if err != nil {
+		return "", err
+	}
+	return highestTag, nil
+}
+
 func parseActionFragments(action string) (owner string, repo string, err error) {
 	frags := strings.Split(action, "/")
 
@@ -385,4 +414,67 @@ func doGetReference(ctx context.Context, restIf interfaces.REST, path string) (s
 	}
 
 	return t.GetObject().GetSHA(), t.GetObject().GetType(), nil
+}
+
+// Fetch all tags for a given commit SHA
+func getTagsForSHA(ctx context.Context, owner, repo, sha string) ([]string, error) {
+	token := os.Getenv("GITHUB_TOKEN") // Use a token to avoid rate limits
+
+	// Use authentication if a token is provided
+	var client *github.Client
+	if token != "" {
+		ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
+		tc := oauth2.NewClient(ctx, ts)
+		client = github.NewClient(tc)
+	} else {
+		client = github.NewClient(nil)
+	}
+
+	var allTags []string
+	opts := &github.ListOptions{PerPage: 100}
+
+	// Paginate through all tags
+	for {
+		tags, resp, err := client.Repositories.ListTags(ctx, owner, repo, opts)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, tag := range tags {
+			if tag.GetCommit().GetSHA() == sha {
+				allTags = append(allTags, tag.GetName())
+			}
+		}
+
+		// Stop when there are no more pages
+		if resp.NextPage == 0 {
+			break
+		}
+		opts.Page = resp.NextPage
+	}
+
+	return allTags, nil
+}
+
+// Find the highest semver-compliant tag
+func getHighestSemverTag(tags []string) (string, error) {
+	var versions []*semver.Version
+
+	for _, tag := range tags {
+		// Attempt to parse as semver, ignore invalid versions
+		v, err := semver.NewVersion(tag)
+		if err == nil {
+			versions = append(versions, v)
+		}
+	}
+
+	if len(versions) == 0 {
+		return "", fmt.Errorf("no valid semver tags found")
+	}
+
+	// Sort versions (highest first)
+	sort.Sort(sort.Reverse(semver.Collection(versions)))
+
+	// Return the highest version
+	return "v" + versions[0].String(), nil
 }

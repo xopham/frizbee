@@ -25,18 +25,17 @@ import (
 	"github.com/stacklok/frizbee/pkg/utils/store"
 )
 
-var (
-	// ErrReferenceSkipped is returned when the reference is skipped.
-	ErrReferenceSkipped = errors.New("reference skipped")
-)
+// ErrReferenceSkipped is returned when the reference is skipped.
+var ErrReferenceSkipped = errors.New("reference skipped")
 
 // EntityRef represents an action reference.
 type EntityRef struct {
-	Name   string `json:"name"`
-	Ref    string `json:"ref"`
-	Type   string `json:"type"`
-	Tag    string `json:"tag"`
-	Prefix string `json:"prefix"`
+	Name    string `json:"name"`
+	Ref     string `json:"ref"`
+	Type    string `json:"type"`
+	Tag     string `json:"tag"`
+	FullTag string `json:"full_tag"`
+	Prefix  string `json:"prefix"`
 }
 
 // Parser is an interface to replace references with digests
