@@ -36,10 +36,8 @@ type contextConfigKey struct{}
 // nolint:gochecknoglobals // this is a context key
 var ContextConfigKey = contextConfigKey{}
 
-var (
-	// ErrNoConfigInContext is returned when no configuration is found in the context.
-	ErrNoConfigInContext = errors.New("no configuration found in context")
-)
+// ErrNoConfigInContext is returned when no configuration is found in the context.
+var ErrNoConfigInContext = errors.New("no configuration found in context")
 
 // FromCommand returns the configuration from the cobra command.
 func FromCommand(cmd *cobra.Command) (*Config, error) {
@@ -96,11 +94,7 @@ func ParseConfigFile(configfile string) (*Config, error) {
 // DefaultConfig returns the default configuration.
 func DefaultConfig() *Config {
 	return &Config{
-		GHActions: GHActions{
-			Filter: Filter{
-				ExcludeBranches: []string{"main", "master"},
-			},
-		},
+		GHActions: GHActions{},
 		Images: Images{
 			ImageFilter: ImageFilter{
 				ExcludeImages: []string{"scratch"},
